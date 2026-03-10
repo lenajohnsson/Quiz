@@ -1,0 +1,19 @@
+# OS-filer
+.DS_Store
+Thumbs.db
+
+# Node (om du senare installerar npm-paket)
+node_modules/
+
+# Byggmappar (om du börjar använda bundlers)
+dist/
+build/
+
+# Editor-specifika filer
+.vscode/
+.idea/
+
+# Loggar
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
