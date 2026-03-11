@@ -1,17 +1,52 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lenas Lilla Quiz</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
-    <link rel="stylesheet" href="style.css">
-</head>
+  <body>
+    <div class="wrapper">
+      <div class="screen active" id="start-screen">
+        <h1>Dags att quiza</h1>
+        <p>Här får du prova dina kunskaper med detta lilla quiz</p>
+        <button id="start-btn">Börja Quiza</button>
+      </div>
 
-<body>
-    
+      <div class="screen" id="quiz-screen">
+        <div class="quiz-header">
+          <h2 id="question-text">Fråga kommer här</h2>
+          <div class="quiz-info">
+            <p>
+              Fråga <span id="current-question">1</span> av
+              <span id="total-quiestions">10</span>
+            </p>
+            <p>Poäng: <span id="score">0</span></p>
+          </div>
+        </div>
+        <div class="answers-container" id="answers-container">
+          <!-- answer buttons -->
+        </div>
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+      </div>
+
+      <div class="screen" id="result-screen">
+        <h1>Quiz Resultat</h1>
+        <div class="result-info">
+          <p>
+            Resultat: <span id="final-score">0</span> av
+            <span id="max-score">10</span>
+          </p>
+          <div id="result-message">Bra jobbat!!</div>
+        </div>
+        <button id="restart-btn"></button>
+      </div>
+    </div>
 
     <script type="module" src="script.js"></script>
-</body>
-
+  </body>
 </html>
