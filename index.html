@@ -10,25 +10,24 @@
   <body>
     <div class="wrapper">
       <div class="screen active" id="start-screen">
-        <h1>Dags att quiza</h1>
-        <p>Här får du prova dina kunskaper med detta lilla quiz</p>
+        <h1>Sverige Quiz</h1>
+        <p>Här får du prova dina kunskaper om Sverige med detta lilla quiz</p>
         <button id="start-btn">Börja Quiza</button>
       </div>
 
       <div class="screen" id="quiz-screen">
         <div class="quiz-header">
-          <h2 id="question-text">Fråga kommer här</h2>
+          <h2 id="question-text"></h2>
           <div class="quiz-info">
             <p>
-              Fråga <span id="current-question">1</span> av
-              <span id="total-quiestions">10</span>
+              Fråga <span id="current-question"></span> av
+              <span id="total-questions"></span>
             </p>
-            <p>Poäng: <span id="score">0</span></p>
+            <p>Poäng: <span id="score"></span></p>
           </div>
         </div>
         <div class="answers-container" id="answers-container">
           <!-- answer buttons -->
-          <button class="answer-btn">Svarsalternativ</button>
         </div>
         <div class="progress-bar">
           <div class="progress" id="progress"></div>
@@ -39,10 +38,10 @@
         <h1>Quiz Resultat</h1>
         <div class="result-info">
           <p>
-            Resultat: <span id="final-score">0</span> av
-            <span id="max-score">10</span>
+            Resultat: <span id="final-score"></span> av
+            <span id="max-score"></span>
           </p>
-          <div id="result-message">Bra jobbat!!</div>
+          <div id="result-message"></div>
         </div>
         <button id="restart-btn">Quiza Igen</button>
       </div>

@@ -4,7 +4,7 @@ const quizScreen = document.querySelector("#quiz-screen");
 const resultScreen = document.querySelector("#result-screen");
 const startButton = document.querySelector("#start-btn");
 const questionText = document.querySelector("#question-text");
-const answerContainer = document.querySelector("#answer-container");
+const answerContainer = document.querySelector("#answers-container");
 const currentQuestionSpan = document.querySelector("#current-question");
 const totalQuestionsSpan = document.querySelector("#total-questions");
 const scoreSpan = document.querySelector("#score");
@@ -17,7 +17,7 @@ const progressBar = document.querySelector("#progress");
 const quizQuestions = [
   {
     question: "Vilken är Sveriges största kommun till ytan?",
-    answer: [
+    answers: [
       { text: "Kiruna kommun", correct: true },
       { text: "Gällivare kommun", correct: false },
       { text: "Gotland", correct: false },
@@ -26,7 +26,7 @@ const quizQuestions = [
   },
   {
     question: "Vilken är Sveriges största sjö?",
-    answer: [
+    answers: [
       { text: "Vättern", correct: false },
       { text: "Vänern", correct: true },
       { text: "Mälaren", correct: false },
@@ -35,7 +35,7 @@ const quizQuestions = [
   },
   {
     question: "Hur många landskap finns det i Sverige?",
-    answer: [
+    answers: [
       { text: "23", correct: false },
       { text: "27", correct: false },
       { text: "25", correct: true },
@@ -44,7 +44,7 @@ const quizQuestions = [
   },
   {
     question: "Vilken är den mest förekommande trädsorten i Skåne?",
-    answer: [
+    answers: [
       { text: "Tall", correct: false },
       { text: "Bok", correct: true },
       { text: "Gran", correct: false },
@@ -53,7 +53,7 @@ const quizQuestions = [
   },
   {
     question: "Hur många öar finns det i Sverige?",
-    answer: [
+    answers: [
       { text: "ca 120 000", correct: false },
       { text: "ca 200 000", correct: false },
       { text: "ca 270 000", correct: true },
@@ -62,7 +62,7 @@ const quizQuestions = [
   },
   {
     question: "Vilket är Svealands högsta berg?",
-    answer: [
+    answers: [
       { text: "Tallmossen", correct: false },
       { text: "Lustigknopp", correct: false },
       { text: "Stora Korpimäki", correct: false },
@@ -71,7 +71,7 @@ const quizQuestions = [
   },
   {
     question: "Hur många procent av Sveriges yta är täckt av skog?",
-    answer: [
+    answers: [
       { text: "ca 50%", correct: false },
       { text: "ca 60%", correct: false },
       { text: "ca 70%", correct: true },
@@ -80,7 +80,7 @@ const quizQuestions = [
   },
   {
     question: "Vilket är Sveriges högsta vattenfall?",
-    answer: [
+    answers: [
       { text: "Njupeskär", correct: true },
       { text: "Stora Sjöfallet", correct: false },
       { text: "Tännforsen", correct: false },
@@ -89,7 +89,7 @@ const quizQuestions = [
   },
   {
     question: "Hur många domkyrkor finns det i Sverige?",
-    answer: [
+    answers: [
       { text: "13", correct: false },
       { text: "15", correct: true },
       { text: "16", correct: false },
@@ -98,7 +98,7 @@ const quizQuestions = [
   },
   {
     question: "Vilken är Sveriges längsta väg?",
-    answer: [
+    answers: [
       { text: "E4", correct: false },
       { text: "E20", correct: false },
       { text: "E18", correct: false },
@@ -106,3 +106,120 @@ const quizQuestions = [
     ],
   },
 ];
+
+// Quiz state variables
+let currentQuestionIndex = 0;
+let score = 0;
+let answersDisabled = false;
+
+totalQuestionsSpan.textContent = quizQuestions.length;
+maxScoreSpan.textContent = quizQuestions.length;
+
+// Event listeners
+startButton.addEventListener("click", startQuiz);
+restartButton.addEventListener("click", restartQuiz);
+
+function startQuiz() {
+  // reset variables
+  currentQuestionIndex = 0;
+  score = 0;
+  scoreSpan.textContent = 0;
+
+  // switching the active screen
+  startScreen.classList.remove("active");
+  quizScreen.classList.add("active");
+
+  // function to show the question
+  showQuestion();
+}
+
+function showQuestion() {
+  // reset state
+  answersDisabled = false;
+
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+
+  // updating the question index
+  currentQuestionSpan.textContent = currentQuestionIndex + 1;
+
+  // updating the progressbar
+  const progressPercent = (currentQuestionIndex / quizQuestions.length) * 100;
+  progressBar.style.width = progressPercent + "%";
+
+  // the question
+  questionText.textContent = currentQuestion.question;
+
+  // the answerbuttons
+  answerContainer.innerHTML = ""; // so that the questions don´t "stack" on eachother
+  currentQuestion.answers.forEach((answer) => {
+    const button = document.createElement("button");
+    button.textContent = answer.text;
+    button.classList.add("answer-btn");
+    // dataset store custom data
+    button.dataset.correct = answer.correct;
+
+    button.addEventListener("click", selectAnswer);
+    answerContainer.appendChild(button);
+  });
+}
+
+function selectAnswer(event) {
+  if (answersDisabled) return;
+
+  answersDisabled = true;
+
+  const selectedButton = event.target;
+  const isCorrect = selectedButton.dataset.correct === "true";
+
+  // converting answerContainer.children to an array to be able to use the forEach method
+  Array.from(answerContainer.children).forEach((button) => {
+    if (button.dataset.correct === "true") {
+      button.classList.add("correct");
+    } else if (button === selectedButton) {
+      button.classList.add("incorrect");
+    }
+  });
+  if (isCorrect) {
+    score++;
+    scoreSpan.textContent = score;
+  }
+
+  // a delay before next question
+  setTimeout(() => {
+    currentQuestionIndex++;
+
+    // checking if there is more questions
+    if (currentQuestionIndex < quizQuestions.length) {
+      showQuestion();
+    } else {
+      showResults();
+    }
+  }, 1000);
+}
+
+function showResults() {
+  quizScreen.classList.remove("active");
+  resultScreen.classList.add("active");
+
+  finalScoreSpan.textContent = score;
+  const percentage = (score / quizQuestions.length) * 100;
+
+  if (percentage === 100) {
+    resultMessage.textContent = "Perfekt! Du är ett geni!";
+  } else if (percentage >= 80) {
+    resultMessage.textContent =
+      "Bra jobbat! Du har mycket bra kunskap om Sverige!";
+  } else if (percentage >= 60) {
+    resultMessage.textContent = "Inte illa! Du har bra kunskap om Sverige!";
+  } else if (percentage >= 40) {
+    resultMessage.textContent = "Du har hyfsad kunskap om Sverige!";
+  } else {
+    resultMessage.textContent = "Du har en del att lära dig om Sverige!";
+  }
+}
+
+function restartQuiz() {
+  resultScreen.classList.remove("active");
+
+  startQuiz();
+}
