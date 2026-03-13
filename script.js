@@ -110,6 +110,7 @@ const quizQuestions = [
 // Quiz state variables
 let currentQuestionIndex = 0;
 let score = 0;
+// to prevent multiple answers for the same question
 let answersDisabled = false;
 
 totalQuestionsSpan.textContent = quizQuestions.length;
@@ -164,8 +165,10 @@ function showQuestion() {
 }
 
 function selectAnswer(event) {
+  // if answers are disabled, do nothing
   if (answersDisabled) return;
 
+  // disable answers to prevent multiple answers for the same question
   answersDisabled = true;
 
   const selectedButton = event.target;
@@ -173,6 +176,7 @@ function selectAnswer(event) {
 
   // converting answerContainer.children to an array to be able to use the forEach method
   Array.from(answerContainer.children).forEach((button) => {
+    // adding correct class to correct answer and incorrect class to the selected wrong answer
     if (button.dataset.correct === "true") {
       button.classList.add("correct");
     } else if (button === selectedButton) {
@@ -187,7 +191,6 @@ function selectAnswer(event) {
   // a delay before next question
   setTimeout(() => {
     currentQuestionIndex++;
-
     // checking if there is more questions
     if (currentQuestionIndex < quizQuestions.length) {
       showQuestion();
@@ -198,6 +201,7 @@ function selectAnswer(event) {
 }
 
 function showResults() {
+  // change the active screen to the result screen
   quizScreen.classList.remove("active");
   resultScreen.classList.add("active");
 
