@@ -224,6 +224,8 @@ function showResults() {
 
 function restartQuiz() {
   resultScreen.classList.remove("active");
-
-  startQuiz();
+  // go back to the start screen
+  startScreen.classList.add("active");
+  // or start the quiz right away
+  //startQuiz();
 }
